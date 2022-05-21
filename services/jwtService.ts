@@ -29,6 +29,6 @@ class TokenService {
         const token = new Jwt({ userId, jwtRefresh: refreshToken });
         return token;
     }
-
-
 }
+
+export default TokenService;
