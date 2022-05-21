@@ -2,6 +2,9 @@ import jwt from 'jsonwebtoken';
 import config from 'config';
 import Jwt from '../models/jwt';
 
+
+
+
 class TokenService {
 
     generateToken(data: any) {
