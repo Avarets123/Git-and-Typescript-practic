@@ -20,7 +20,7 @@ const jwtSchema = new Schema<IJwt>({
         type: String,
         required: false
     }
-}, { _id: false });
+}, { _id: true });
 
 
 export default model('jwtData', jwtSchema);

@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import cors from 'cors';
 import mongoose from "mongoose";
 import config from "config";
+import { authRouter } from "./routes/auth";
 
 class App {
     private readonly PORT: number = +process.env.PORT! | 9999;
@@ -16,6 +17,7 @@ class App {
         this.app.use(express.json());
         this.app.use(cookieParser());
         this.app.use(cors());
+        this.app.use(authRouter)
     }
 
 

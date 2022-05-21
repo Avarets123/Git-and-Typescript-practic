@@ -1,27 +1,50 @@
 import { Router, Request, Response } from "express";
-import User, { IUser } from "../models/user";
+import AuthService from "../services/authService";
 
-class ControllerAuth {
-
-    private readonly router: Router = Router();
-
-    register = () => {
-
-        this.router.post('/api/register', async (req: Request, res: Response) => {
-
-            const { email, password }: IUser = req.body;
-
-            const candidate = await User.findOne({ email });
+const authRouter = Router();
 
 
-            if (candidate) res.json('Такой пользователь существует !');
+authRouter.post('/api/register', async (req: Request, res: Response) => {
 
+    try {
+        const userData = await AuthService.createUser(req, res)
+        //@ts-ignore
+        res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true })
 
+        return res.json(userData);
 
-
-        });
-
+    } catch (e) {
+        console.log(e)
     }
-}
+});
 
-export { ControllerAuth };
+authRouter.post('/api/login', async (req: Request, res: Response) => {
+    try {
+
+        const userData = await AuthService.login(req, res);
+        //@ts-ignore
+        res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
+        return res.json(userData);
+
+    } catch (e) {
+        console.log(e);
+    }
+});
+
+authRouter.get('/api/logout', async (req: Request, res: Response) => {
+    try {
+
+        const { refreshToken } = req.cookies;
+        const token = await AuthService.logout(refreshToken);
+        res.clearCookie('refreshToken');
+        return res.json(token);
+
+    } catch {
+        console.log(`Error`)
+    }
+});
+
+
+
+
+export { authRouter };
