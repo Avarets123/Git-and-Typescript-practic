@@ -1,4 +1,4 @@
 {
-    "CONNECT_DB": "mongodb+srv://Osman:E60jGeFR3eXPqsk3@cluster0.avp8j.mongodb.net/jwtDatabase?retryWrites=true&w=majority",
+    "CONNECT_DB": "*******",
     "SECRET": "have a nice day!"
 }
