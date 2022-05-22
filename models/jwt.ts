@@ -10,7 +10,6 @@ const jwtSchema = new Schema<IJwt>({
     userId: {
         type: Schema.Types.ObjectId,
         ref: 'users',
-        required: true
     },
     jwtRefresh: {
         type: String,

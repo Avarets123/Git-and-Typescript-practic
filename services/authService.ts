@@ -50,7 +50,32 @@ class AuthService {
         return token;
     }
 
+    public static refresh = async (refreshToken: string) => {
 
+        if (!refreshToken) {
+            return `Пользователь не авторизован !`
+        }
+
+        const userData = TokenService.validateRefreshToken(refreshToken);
+        const tokenFromDb = await TokenService.findToken(refreshToken);
+
+        if (!userData || !tokenFromDb) return `Пользователь не авторизован !`;
+
+        const user = await User.findById(userData.userId ?? userData._doc?._id);
+        const tokens = TokenService.generateToken({ ...user });
+
+        await TokenService.saveToken(user?._id, tokens.refreshToken);
+        return {
+            ...tokens,
+            user
+        };
+
+    }
+
+    public static getAllUsers = async () => {
+        const users = await User.find();
+        return users;
+    }
 
 }
 

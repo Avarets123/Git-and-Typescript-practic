@@ -18,6 +18,17 @@ class TokenService {
         }
     }
 
+    public static validateRefreshToken = (token: any): any => {
+        const userData = jwt.verify(token, config.get('SECRET'));
+        return userData;
+    }
+
+    public static validateAccessToken = (token: any): any => {
+        const userData = jwt.verify(token, config.get('SECRET'));
+        return userData;
+    }
+
+
     public static async saveToken(userId: any, refreshToken: any) {
         const tokenData = await Jwt.findOne({ userId });
 
@@ -35,6 +46,16 @@ class TokenService {
         const tokenData = await Jwt.deleteOne({ refreshToken });
         return tokenData;
     }
+
+    public static findToken = async (refreshToken: string) => {
+
+        const tokenData = await Jwt.findOne({ refreshToken });
+        return tokenData;
+
+    }
+
+
+
 }
 
 export default TokenService;
